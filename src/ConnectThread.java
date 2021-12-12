@@ -28,5 +28,15 @@ public class ConnectThread extends Thread{
         Peer peer = new Peer(otherSocket);
         WorkerThread workerThread = new WorkerThread(peer);
         workerThread.start();
+        while(true){
+            synchronized (peer) {
+                if (peer.handshakeWasMade) break;
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 }
